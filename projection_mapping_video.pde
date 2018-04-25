@@ -24,7 +24,7 @@ import deadpixel.keystone.*;
 Keystone ks; // the Keystone object
 int numSurfaces = 9;
 CornerPinSurface [] surfaces = new CornerPinSurface [numSurfaces]; //  surface array
-int numMovies = 2;
+int numMovies = 3;
 
 PGraphics [] offscreenBuffers = new PGraphics [numSurfaces]; // offscreen buffer one
 Movie [] mov = new Movie[numMovies];
@@ -57,18 +57,21 @@ void setup() {
   // note that we're matching the resolution of the
   // CornerPinSurface.
   // (The offscreen buffer can be P2D or P3D)
+  
+  
+  //From left to right, 4,8,7 - 2,5,1tt - 0,6,3 from viewers perspective
+  
+  
   for (int i = 0; i < numSurfaces; i++)
     offscreenBuffers[i] = createGraphics(400, 300, P2D);
     
     
-   mov[0] = new Movie(this, 2+".mp4");
-   mov[0].play();
-    
- /* for (int i=0; i<numMovies; i++){
-    String file = i + ".mp4";
+ for (int i=0; i<numMovies; i++){
+     println(i);
+    String file = (i+1) + ".mp4";
     mov[i] = new Movie(this, file);
     mov[i].play();
-  }*/
+  }
 }
 void draw() {
   background(0);   
