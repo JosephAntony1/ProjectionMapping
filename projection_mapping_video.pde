@@ -17,7 +17,7 @@ import deadpixel.keystone.*;
  * onto multiple flat surfaces using a single projector.
  *
  * This extra flexbility can comes at the sacrifice of more or 
- * less pixel resolution, depending on your projector and how
+ * less pixel resolution, depending on your projector and howt
  * many surfaces you want to map. 
  */
 
@@ -42,6 +42,7 @@ int speed = 6;
 float value = 0.0;
 int state = 0;
 int bg = 0;
+int face;
 void setup() {
   fullScreen(P3D, 2);
   // Keystone will only work with P3D or OPENGL renderers, 
@@ -99,6 +100,7 @@ void draw() {
       offscreenBuffers[i].image(mov[animation], 0, 0);
       
     }
+    
     offscreenBuffers[i].endDraw();
   }
   
@@ -125,24 +127,7 @@ void noteOn(int channel, int pitch, int velocity) {
   println("Pitch:"+pitch);
   println("Velocity:"+velocity);
   println(animation);
-  if (pitch == 40 || pitch == 36) {
-    animation = 0;
-    if (animation == 0) {
-      speed = 0;
-      long temp = millis();
-      while (millis() - temp < 100) {
-      }
-      speed = 6;
-    } else if (pitch == 36) {
-      animation = (animation + 1)%numMovies;
-    }
-  } else if (pitch == 38) {
-    animation = 1;
-    scale= 1;
-  } else if (pitch != 42) {
-    animation = 2;
-    value = velocity/127.0;
-  }
+  face = pitch%numSurfaces;
 }
 
 void noteOff(int channel, int pitch, int velocity) {
@@ -192,10 +177,10 @@ void keyPressed() {
     state = (state + 1)%3;
     if(state==2)  {
       bgMovs[bg].play();
-      mov[animation].stop(); 
+      mov[animation].pause(); 
     }
     else if (state == 0){
-      bgMovs[bg].stop();  
+      bgMovs[bg].pause();  
     }
     else if(state == 1){
       mov[animation].play();
@@ -208,13 +193,13 @@ void keyPressed() {
       int temp = animation;
       animation = (animation + 1) % numMovies;
       mov[animation].play();
-      mov[temp].stop();
+      mov[temp].pause();
     }
     else if (state == 2){
       int temp = bg;      
       bg = (bg + 1)%numBGMovies;
       bgMovs[bg].play(); 
-      bgMovs[temp].stop(); 
+      bgMovs[temp].pause(); 
       
     }
     break;
